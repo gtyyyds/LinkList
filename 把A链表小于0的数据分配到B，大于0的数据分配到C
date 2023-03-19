@@ -1,1 +1,117 @@
+#include<iostream>
+using namespace std;
+class ListNode
+{
+public:
+	ListNode() {}
+	ListNode(int data)
+	{
+		this->m_data = data;
+		this->next = NULL;
+	}
+	~ListNode() {}
+	int m_data;
+	ListNode* next;
+};
+class LinkList
+{
+public:
+	LinkList()
+	{
+		head = new ListNode;
+		head->next = NULL;
+	}
+	~LinkList()
+	{
+		if (head != NULL)
+		{
+			delete head;
+		}
+	}
+	bool creatList();
+	bool shareList(LinkList& B, LinkList& C);
+	void printList();
 
+	ListNode* head;
+};
+bool LinkList::creatList()
+{
+	if (head->next != NULL)
+	{
+		return false;
+	}
+	ListNode* L = head;
+	cout << "你想创建几个节点?" << endl;
+	int ret;
+	cin >> ret;
+	for (int i = 0; i < ret; i++)
+	{
+		cout << "请输入第" << i + 1 << "个数据（int）：  " ;
+		ListNode* p = new ListNode;
+		cin >> p->m_data;
+		L->next= p; 
+		p->next = NULL;
+		L = L->next;
+	}
+	return true;
+}
+void LinkList::printList()
+{
+	ListNode* p = head->next;
+	int i = 1;
+	while (p != NULL)
+	{
+		cout << p->m_data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+bool LinkList::shareList(LinkList& B, LinkList& C)
+{
+	ListNode* L = head;
+	B.head = new ListNode;
+	C.head = new ListNode;
+	ListNode* Lb = B.head;
+	ListNode* Lc = C.head;
+	while (L!=NULL)
+	{
+		
+		if (L->m_data < 0)
+		{
+			ListNode* p = new ListNode;
+			p->m_data = L->m_data;
+			p->next = NULL;
+			Lb->next = p;
+			Lb = Lb->next;
+
+		}
+		else if (L->m_data > 0)
+		{
+			ListNode* p = new ListNode;
+			p->m_data = L->m_data;
+			p->next = NULL;
+			Lc->next = p;
+			Lc = Lc->next;
+		}
+		
+		L = L->next;
+	}
+	return true;
+}
+int main()
+{
+	LinkList A;
+	cout << "对单链表A进行创建" << endl;
+	A.creatList();
+	cout << "把A链表中小于0的数据分配给B链表，大于0的数据分配给C链表" << endl;
+	LinkList B, C;
+	A.shareList(B, C);
+
+	cout << "A: ";
+	A.printList();
+	cout << "B: ";
+	B.printList();
+	cout << "C: ";
+	C.printList();
+
+}
